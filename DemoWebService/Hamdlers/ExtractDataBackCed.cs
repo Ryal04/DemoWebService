@@ -67,8 +67,6 @@ namespace DemoWebService.Hamdlers
                     }
                 }
 
-                
-
                 string[] fechanacimiento = list[0].Split(' ');
                 if (fechanacimiento.Length > 1)
                 {
@@ -84,10 +82,16 @@ namespace DemoWebService.Hamdlers
                 string[] fechaylugarexp = list[6].Split(' ');
                 if (fechaylugarexp.Length > 1)
                 {
-                    list.Add(fechaylugarexp[0]);
                     list[6] = fechaylugarexp[1];
+                    
+                    if (list.Count > 7)
+                    {
+                        list[7] = fechaylugarexp[0];
+                    }else {
+                        list.Add(fechaylugarexp[0]);
+                    }
                 }
-
+                
                 return new ModelBackCed()
                 {
                     fechaNacimiento = list[0],
@@ -99,7 +103,6 @@ namespace DemoWebService.Hamdlers
                     lugarDeExpedicion = list[6],
                     fechaDeExpedicion = list[7]
                 };
-
 
             }
         }

@@ -72,15 +72,14 @@ namespace DemoWebService.Controllers
                     {
                         ModelFromCed = Response1,
                         ModelBackCed = Response2,
-                        ModelCompareFace = Response3,
-
+                        ModelCompareFace = Response3
                     });
                 }
 
                 return BadRequest("id is required");
             }
 
-            return BadRequest("ID and Retrat is Required");
+            return BadRequest("Images Is Required");
 
         }
 
