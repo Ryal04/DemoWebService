@@ -1,0 +1,20 @@
+{
+  "version": 2,
+  "dgSpecHash": "tlesoFvxebM6tFu6MxCh8IqPEx+WE6M4viEnyq0evSEOUgdK+soR9JXRSXzX2Lc8hoBISchPhA4oSJIMJrABoA==",
+  "success": true,
+  "projectFilePath": "D:\\Users\\practecnologia03\\Documents\\Proyectos\\DemoWebService\\DemoWebService\\DemoWebService.csproj",
+  "expectedPackageFiles": [
+    "D:\\Users\\practecnologia03\\.nuget\\packages\\awssdk.core\\3.7.3.1\\awssdk.core.3.7.3.1.nupkg.sha512",
+    "D:\\Users\\practecnologia03\\.nuget\\packages\\awssdk.extensions.netcore.setup\\3.7.1\\awssdk.extensions.netcore.setup.3.7.1.nupkg.sha512",
+    "D:\\Users\\practecnologia03\\.nuget\\packages\\awssdk.rekognition\\3.7.3.6\\awssdk.rekognition.3.7.3.6.nupkg.sha512",
+    "D:\\Users\\practecnologia03\\.nuget\\packages\\awssdk.textract\\3.7.1.17\\awssdk.textract.3.7.1.17.nupkg.sha512",
+    "D:\\Users\\practecnologia03\\.nuget\\packages\\mediatr\\9.0.0\\mediatr.9.0.0.nupkg.sha512",
+    "D:\\Users\\practecnologia03\\.nuget\\packages\\mediatr.extensions.microsoft.dependencyinjection\\9.0.0\\mediatr.extensions.microsoft.dependencyinjection.9.0.0.nupkg.sha512",
+    "D:\\Users\\practecnologia03\\.nuget\\packages\\microsoft.extensions.configuration.abstractions\\2.0.0\\microsoft.extensions.configuration.abstractions.2.0.0.nupkg.sha512",
+    "D:\\Users\\practecnologia03\\.nuget\\packages\\microsoft.extensions.dependencyinjection.abstractions\\2.0.0\\microsoft.extensions.dependencyinjection.abstractions.2.0.0.nupkg.sha512",
+    "D:\\Users\\practecnologia03\\.nuget\\packages\\microsoft.extensions.logging.abstractions\\2.0.0\\microsoft.extensions.logging.abstractions.2.0.0.nupkg.sha512",
+    "D:\\Users\\practecnologia03\\.nuget\\packages\\microsoft.extensions.primitives\\2.0.0\\microsoft.extensions.primitives.2.0.0.nupkg.sha512",
+    "D:\\Users\\practecnologia03\\.nuget\\packages\\system.runtime.compilerservices.unsafe\\4.4.0\\system.runtime.compilerservices.unsafe.4.4.0.nupkg.sha512"
+  ],
+  "logs": []
+}
