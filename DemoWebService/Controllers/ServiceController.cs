@@ -58,7 +58,6 @@ namespace DemoWebService.Controllers
                     // act on the Base64 data
                 }
 
-                
                 Response1 = await Mediator.Send(new ExtractDataFromCed.Query { cedFrom = cedfrom });
                 Response2 = await Mediator.Send(new ExtractDataBackCed.Query { cedBack = cedback });
                 
