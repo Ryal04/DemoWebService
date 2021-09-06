@@ -34,8 +34,8 @@ namespace DemoWebService.Hamdlers
 
                 var cont = 0;
                 var list = new List<String>();
-                Document ImageTarget = new Document();
 
+                Document ImageTarget = new Document();
                 ImageTarget.Bytes = request.cedBack;
 
                 var response = await amazonTextract.DetectDocumentTextAsync(new DetectDocumentTextRequest()
@@ -63,22 +63,24 @@ namespace DemoWebService.Hamdlers
                         {
                            list.Add(data.Text);
                         }
-
                     }
                 }
 
+                //Split
                 string[] fechanacimiento = list[0].Split(' ');
                 if (fechanacimiento.Length > 1)
                 {
                     list[0] = fechanacimiento[3];
                 }
 
+                //Split
                 string[] DepartamentoNacimiento = list[2].Split('(',')');
                 if (DepartamentoNacimiento.Length > 1)
                 {
                     list[2] = DepartamentoNacimiento[1];
                 }
 
+                //Split
                 string[] fechaylugarexp = list[6].Split(' ');
                 if (fechaylugarexp.Length > 1)
                 {
@@ -91,7 +93,8 @@ namespace DemoWebService.Hamdlers
                         list.Add(fechaylugarexp[0]);
                     }
                 }
-                
+
+                //New obj ModelBackCed return
                 return new ModelBackCed()
                 {
                     fechaNacimiento = list[0],
@@ -103,9 +106,7 @@ namespace DemoWebService.Hamdlers
                     lugarDeExpedicion = list[6],
                     fechaDeExpedicion = list[7]
                 };
-
             }
         }
-
     }
 }
