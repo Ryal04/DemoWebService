@@ -33,7 +33,6 @@ namespace DemoWebService.Controllers
 
             if (CedFrontal != null && CedDorsal != null && Foto != null)
             {
-
                 //Convercion Imagen a Bytes
                 using (var ms = new MemoryStream())
                 {
@@ -59,7 +58,6 @@ namespace DemoWebService.Controllers
                 }
 
 
-
                 Response1 = await Mediator.Send(new ExtractDataFromCed.Query { cedFrom = cedfrom });
 
                 if (Response1 != null)
@@ -71,7 +69,6 @@ namespace DemoWebService.Controllers
                 {
                     Response3 = await Mediator.Send(new CompareFaces.Query { cedFrom = cedfrom, retrat = foto });
                 }
-
 
 
                 if (Response1 != null && Response2 != null && Response3 != null)
@@ -87,7 +84,8 @@ namespace DemoWebService.Controllers
                 return BadRequest("Error in files request");
             }
 
-            return BadRequest("Images Is Required");
+          return BadRequest("All images is Required");
+
         }
     }
 }
