@@ -70,7 +70,6 @@ namespace DemoWebService.Controllers
                     Response3 = await Mediator.Send(new CompareFaces.Query { cedFrom = cedfrom, retrat = foto });
                 }
 
-
                 if (Response1 != null && Response2 != null && Response3 != null)
                 {
                     return Ok(new ManagerClass()
