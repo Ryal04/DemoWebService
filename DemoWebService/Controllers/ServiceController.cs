@@ -84,7 +84,7 @@ namespace DemoWebService.Controllers
                     });
                 }
 
-                return BadRequest("Error in files this request");
+                return BadRequest("Error in files request");
             }
 
             return BadRequest("Images Is Required");
