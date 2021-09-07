@@ -58,15 +58,24 @@ namespace DemoWebService.Controllers
                     // act on the Base64 data
                 }
 
+
+
                 Response1 = await Mediator.Send(new ExtractDataFromCed.Query { cedFrom = cedfrom });
-                Response2 = await Mediator.Send(new ExtractDataBackCed.Query { cedBack = cedback });
-                
-                if (Response1 != null && Response2 != null)
+
+                if (Response1 != null)
+                {
+                    Response2 = await Mediator.Send(new ExtractDataBackCed.Query { cedBack = cedback });
+                }
+
+                if (Response2 != null)
                 {
                     Response3 = await Mediator.Send(new CompareFaces.Query { cedFrom = cedfrom, retrat = foto });
                 }
 
-                if (Response1 != null && Response2 != null && Response3 != null) {
+
+
+                if (Response1 != null && Response2 != null && Response3 != null)
+                {
                     return Ok(new ManagerClass()
                     {
                         ModelFromCed = Response1,
@@ -75,12 +84,10 @@ namespace DemoWebService.Controllers
                     });
                 }
 
-                return BadRequest("id is required");
+                return BadRequest("Error in files this request");
             }
 
             return BadRequest("Images Is Required");
-
         }
-
     }
 }

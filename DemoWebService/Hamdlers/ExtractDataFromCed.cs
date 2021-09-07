@@ -30,61 +30,71 @@ namespace DemoWebService.Hamdlers
 
             public async Task<ModelFromCed> Handle(Query request, CancellationToken cancellationToken)
             {
-
-                var cont = 0;
-                var list = new List<String>();
-                Document ImageTarget = new Document();
-
-                ImageTarget.Bytes = request.cedFrom;
-
-                var response = await amazonTextract.DetectDocumentTextAsync(new DetectDocumentTextRequest()
+                try
                 {
-                    Document = ImageTarget,
-                });
+                    // Declaracion de variables
+                    var cont = 0;
+                    var list = new List<String>();
+                    Document ImageTarget = new Document();
 
+                    ImageTarget.Bytes = request.cedFrom;
 
-                foreach (var data in response.Blocks)
-                {
-                    if (data.BlockType.Value == "LINE" && data.Confidence >= 85)
+                    var response = await amazonTextract.DetectDocumentTextAsync(new DetectDocumentTextRequest()
                     {
-                        cont++;
+                        Document = ImageTarget,
+                    });
 
-                        if (cont > 2 && cont != 4)
+
+                    foreach (var data in response.Blocks)
+                    {
+                        if (data.BlockType.Value == "LINE" && data.Confidence >= 85)
                         {
-                            if (data.Text != "NOMBRES" && data.Text != "APELLIDOS" && data.Text != "FIRMA" && data.Text != "NUMERO")
-                            {
-                                list.Add(data.Text);
-                            }
-                        }
+                            cont++;
 
-                        if (cont == 4)
-                        {
-                            if (data.Text != "NÚMERO" && data.Text != "NUMERO")
+                            if (cont > 2 && cont != 4)
                             {
-                                string[] split = data.Text.Split(' ');
-
-                                if (split.Length != 1)
-                                {
-                                    list.Add(split[1]);
-                                }
-                                else
+                                if (data.Text != "NOMBRES" && data.Text != "APELLIDOS" && data.Text != "FIRMA" && data.Text != "NUMERO")
                                 {
                                     list.Add(data.Text);
                                 }
                             }
+
+                            if (cont == 4)
+                            {
+                                if (data.Text != "NÚMERO" && data.Text != "NUMERO")
+                                {
+                                    string[] split = data.Text.Split(' ');
+
+                                    if (split.Length != 1)
+                                    {
+                                        list.Add(split[1]);
+                                    }
+                                    else
+                                    {
+                                        list.Add(data.Text);
+                                    }
+                                }
+                            }
                         }
                     }
+
+                    return new ModelFromCed()
+                    {
+                        tipoIdentificacion = list[0],
+                        numIdentificacion = list[1],
+                        apellidos = list[2],
+                        nombres = list[3],
+                    };
+
                 }
-
-                return new ModelFromCed()
+                catch (Exception e)
                 {
-                    tipoIdentificacion = list[0],
-                    numIdentificacion = list[1],
-                    apellidos = list[2],
-                    nombres = list[3],
-
-                };
-
+                    Console.WriteLine("--> Error en extraccion de datos de imagen Frontal");
+                    Console.WriteLine("--> " + e);
+                    //New Null Obj ModelBackCed Return 
+                    return null;
+                }
+             
             }
         }
     }

@@ -23,7 +23,6 @@ namespace DemoWebService.Hamdlers
         {
 
             private readonly IAmazonTextract amazonTextract;
-
             public Handler(IAmazonTextract amazonTextract)
             {
                 this.amazonTextract = amazonTextract;
@@ -31,81 +30,94 @@ namespace DemoWebService.Hamdlers
 
             public async Task<ModelBackCed> Handle(Query request, CancellationToken cancellationToken)
             {
-
-                var cont = 0;
-                var list = new List<String>();
-
-                Document ImageTarget = new Document();
-                ImageTarget.Bytes = request.cedBack;
-
-                var response = await amazonTextract.DetectDocumentTextAsync(new DetectDocumentTextRequest()
+                try
                 {
-                    Document = ImageTarget,
-                });
-
-                foreach (var data in response.Blocks)
-                {
-
-                    if (data.BlockType.Value == "LINE" && data.Confidence >= 85)
-                    {
-                        cont++;
-
-                        if (data.Text != "FECHA DE NACIMIENTO" && cont == 1)
-                        {
-                            list.Add(data.Text);
-                        }
-
-                        if(data.Text != "LUGAR DE NACIMIENTO"
-                        && data.Text != "SEXO"
-                        && data.Text != "G.S. RH"
-                        && data.Text != "ESTATURA"
-                        && cont > 1 && cont < 13)
-                        {
-                           list.Add(data.Text);
-                        }
-                    }
-                }
-
-                //Split
-                string[] fechanacimiento = list[0].Split(' ');
-                if (fechanacimiento.Length > 1)
-                {
-                    list[0] = fechanacimiento[3];
-                }
-
-                //Split
-                string[] DepartamentoNacimiento = list[2].Split('(',')');
-                if (DepartamentoNacimiento.Length > 1)
-                {
-                    list[2] = DepartamentoNacimiento[1];
-                }
-
-                //Split
-                string[] fechaylugarexp = list[6].Split(' ');
-                if (fechaylugarexp.Length > 1)
-                {
-                    list[6] = fechaylugarexp[1];
+                    // Declaracion de variables
+                    var cont = 0;
+                    var list = new List<String>();
+                    Document ImageTarget = new Document();
                     
-                    if (list.Count > 7)
-                    {
-                        list[7] = fechaylugarexp[0];
-                    }else {
-                        list.Add(fechaylugarexp[0]);
-                    }
-                }
+                    ImageTarget.Bytes = request.cedBack;
 
-                //New Obj ModelBackCed Return
-                return new ModelBackCed()
+                    var response = await amazonTextract.DetectDocumentTextAsync(new DetectDocumentTextRequest()
+                    {
+                        Document = ImageTarget,
+                    });
+
+                    foreach (var data in response.Blocks)
+                    {
+
+                        if (data.BlockType.Value == "LINE" && data.Confidence >= 85)
+                        {
+                            cont++;
+
+                            if (data.Text != "FECHA DE NACIMIENTO" && cont == 1)
+                            {
+                                list.Add(data.Text);
+                            }
+
+                            if (data.Text != "LUGAR DE NACIMIENTO"
+                            && data.Text != "SEXO"
+                            && data.Text != "G.S. RH"
+                            && data.Text != "ESTATURA"
+                            && cont > 1 && cont < 13)
+                            {
+                                list.Add(data.Text);
+                            }
+                        }
+                    }
+
+                    //Split
+                    string[] fechanacimiento = list[0].Split(' ');
+                    if (fechanacimiento.Length > 1)
+                    {
+                        list[0] = fechanacimiento[3];
+                    }
+
+                    //Split
+                    string[] DepartamentoNacimiento = list[2].Split('(',')');
+                    if (DepartamentoNacimiento.Length > 1)
+                    {
+                        list[2] = DepartamentoNacimiento[1];
+                    }
+
+                    //Split
+                    string[] fechaylugarexp = list[6].Split(' ');
+                    if (fechaylugarexp.Length > 1)
+                    {
+                        list[6] = fechaylugarexp[1];
+
+                        if (list.Count > 7)
+                        {
+                            list[7] = fechaylugarexp[0];
+                        }
+                        else
+                        {
+                            list.Add(fechaylugarexp[0]);
+                        }
+                    }
+
+                    //New Obj ModelBackCed Return
+                    return new ModelBackCed()
+                    {
+                        fechaNacimiento = list[0],
+                        ciudadNacimiento = list[1],
+                        departamentoNacimiento = list[2],
+                        estatura = list[3],
+                        rh = list[4],
+                        sexo = list[5],
+                        lugarDeExpedicion = list[6],
+                        fechaDeExpedicion = list[7]
+                    };
+                }
+                catch (Exception e)
                 {
-                    fechaNacimiento = list[0],
-                    ciudadNacimiento = list[1],
-                    departamentoNacimiento = list[2],
-                    estatura = list[3],
-                    rh = list[4],
-                    sexo = list[5],
-                    lugarDeExpedicion = list[6],
-                    fechaDeExpedicion = list[7]
-                };
+                    Console.WriteLine("--> Error en extraccion de datos de imagen Dorsal");
+                    Console.WriteLine("--> " + e);
+                    //New Null Obj ModelBackCed Return 
+                    return null;
+                }
+                
             }
         }
     }

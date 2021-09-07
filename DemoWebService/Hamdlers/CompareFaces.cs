@@ -22,7 +22,6 @@ namespace DemoWebService.Hamdlers
 
         public class Handler : IRequestHandler<Query, ModelCompareFace>
         {
-
             private readonly IAmazonRekognition rekognition;
 
             public Handler(IAmazonRekognition rekognition)
@@ -32,36 +31,48 @@ namespace DemoWebService.Hamdlers
 
             public async Task<ModelCompareFace> Handle(Query request, CancellationToken cancellationToken)
             {
-                var similarity = 0F;
-                Image CedFrom = new Image();
-                Image Retrat = new Image();
-
-                CedFrom.Bytes = request.cedFrom;
-                Retrat.Bytes = request.retrat;
-
-                var response = await rekognition.CompareFacesAsync(new CompareFacesRequest()
+                try
                 {
-                    //Imagen Byte 1
-                    SourceImage = CedFrom,
-                    //Imagen Byte 2
-                    TargetImage = Retrat,
-                    // Umbral de Similaridad
-                    SimilarityThreshold = 90F,
+                    // Declaracion de variables
+                    var similarity = 0F;
+                    var similarityThreshold = 90F;
+                    Image CedFrom = new Image();
+                    Image Retrat = new Image();
 
-                });
+                    CedFrom.Bytes = request.cedFrom;
+                    Retrat.Bytes = request.retrat;
 
-                foreach (var data in response.FaceMatches)
-                {
-                    similarity = data.Similarity;
+                    var response = await rekognition.CompareFacesAsync(new CompareFacesRequest()
+                    {
+                        //Imagen Byte 1
+                        SourceImage = CedFrom,
+                        //Imagen Byte 2
+                        TargetImage = Retrat,
+                        // Umbral de Similaridad
+                        SimilarityThreshold = similarityThreshold,
+
+                    });
+
+                    foreach (var data in response.FaceMatches)
+                    {
+                        similarity = data.Similarity;
+                    }
+
+                    return new ModelCompareFace()
+                    {
+                        similarity = similarity
+                    };
+
                 }
-
-
-                return new ModelCompareFace()
+                catch (Exception e)
                 {
-                    similarity = similarity
-                };
+                    Console.WriteLine("--> Error en Comparacion de Rostros");
+                    Console.WriteLine("--> " + e);
+                    //New Null Obj ModelBackCed Return 
+                    return null;
+                }
+                
             }
         }
-
     }
 }
